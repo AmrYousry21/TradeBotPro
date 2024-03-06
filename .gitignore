@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/TradeBotPro.App/appsettings.json
+/TradeBotPro.App/appsettings.Development.json

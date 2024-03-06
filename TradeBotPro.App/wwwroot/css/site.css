@@ -1,0 +1,37 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.logo {
+    font-family: fantasy;
+    letter-spacing: 6px;
+    color: #d62a2a !important;
+    padding: 10px;
+    font-size: 22px;
+}
+
+.box-shadow {
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+/* Font Sizes */
+.font-xs { font-size: 0.6rem; }
+.font-sm { font-size: 0.8rem; }
+.font-lg { font-size: 1.2rem; }
+.font-xl { font-size: 1.4rem; }
+/* Font Sizes */

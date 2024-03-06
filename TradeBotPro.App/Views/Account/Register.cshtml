@@ -1,0 +1,43 @@
+﻿@model TradeBotPro.App.Models.FormModels.RegisterFormModel
+@{
+    ViewData["Title"] = "Register Page";
+}
+
+<div class="row">
+    <div class="box-shadow offset-lg-3 col-lg-6 offset-md-2 col-md-8 col-sm-12 border border-1 py-4 rounded">
+        <h4 class="mb-4">User Registration</h4>
+        <form id="form" asp-action="Register" asp-controller="Account" method="post">
+            <div class="form-group mb-3">
+                <label asp-for="FirstName" class="mb-1">First Name <span class="text-danger">*</span></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LastName" class="mb-1">Last Name <span class="text-danger">*</span></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Email">Email <span class="text-danger">*</span></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="mb-1">Password <span class="text-danger">*</span></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="ConfirmPassword" class="mb-1">Confirm Password <span class="text-danger">*</span></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="RegistrationKey" class="mb-1">Registration Key <span class="text-danger">*</span></label>
+                <input asp-for="RegistrationKey" class="form-control" />
+                <span asp-validation-for="RegistrationKey" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+    </div>
+</div>

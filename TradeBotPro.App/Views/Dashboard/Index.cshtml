@@ -1,0 +1,27 @@
+﻿@model TradeBotPro.App.Models.ViewModels.DashboardSummaryViewModel
+@{
+    ViewData["Title"] = "Dashboard Page";
+}
+
+<div id="container">
+    <div class="row">
+        <h3 class="mb-2">Dashboard</h3>
+    </div>
+    <div class="row">
+        <div class="kpi-card purple">
+            <span class="card-value">@Model.TotalClosedOrders</span>
+            <span class="card-text">Total Closed Orders</span>
+            <i class="fas fa-shopping-cart icon"></i>
+        </div>
+        <div class="kpi-card green">
+            <span class="card-value">@Model.TotalProfit</span>
+            <span class="card-text">Total Profit</span>
+            <i class="fas fa-shopping-cart icon"></i>
+        </div>
+        <div class="kpi-card red">
+            <span class="card-value">@Model.TotalLoss</span>
+            <span class="card-text">Total Loss</span>
+            <i class="fas fa-shopping-cart icon"></i>
+        </div>
+    </div>
+</div>

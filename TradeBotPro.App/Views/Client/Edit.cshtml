@@ -1,0 +1,30 @@
+﻿@using TradeBotPro.App.Models.DataModels;
+@model TradeBotPro.App.Models.FormModels.ClientEditFormModel
+@{
+    ViewData["Title"] = "Client Edit Page";
+}
+
+<div class="row">
+    <div class="box-shadow offset-lg-3 col-lg-6 offset-md-2 col-md-8 col-sm-12 border border-1 py-4 rounded">
+        <h4 class="mb-4">@(Model.Edit ? "Add" : "Edit") Client</h4>
+        <form id="form" asp-action="@(Model.Edit ? "Edit" : "Add")" asp-controller="Client" method="post">
+            <div class="form-group mb-3">
+                <label asp-for="Name">Name <span class="text-danger">*</span></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Status">Status <span class="text-danger">*</span></label>
+                <select asp-for="Status" class="form-select">
+                    <option value="">Select...</option>
+                    @foreach (var item in Model.StatusList)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>                
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Save</button>
+        </form>
+    </div>
+</div>

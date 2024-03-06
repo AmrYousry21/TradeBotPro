@@ -1,0 +1,36 @@
+﻿@model TradeBotPro.App.Models.ViewModels.ClientListViewModel
+@{
+    ViewData["Title"] = "Clients Page";
+}
+
+<div class="container px-4">
+    <div class="d-flex border-bottom border-bottom-1 pb-2 mb-4">
+        <p class="font-xl mb-0">Clients</p>
+        <div class="ms-auto">
+            <a class="btn btn-success px-3 py-1" asp-area="" asp-controller="Client" asp-action="Add">Add Client</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Registration Key</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in Model.Clients)
+            {
+                <tr>
+                    <td>@client.Name</td>
+                    <td>@client.Status.ToString()</td>
+                    <td>@client.RegistrationKey</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary" asp-area="" asp-controller="Client" asp-action="Edit" asp-route-id="@client.Id"><i class="fas fa-eye"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

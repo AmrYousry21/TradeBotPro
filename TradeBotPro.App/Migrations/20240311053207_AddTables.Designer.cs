@@ -11,8 +11,8 @@ using TradeBotPro.App;
 namespace TradeBotPro.App.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240303201158_UpdateUserPasswordLength")]
-    partial class UpdateUserPasswordLength
+    [Migration("20240311053207_AddTables")]
+    partial class AddTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,7 @@ namespace TradeBotPro.App.Migrations
 
             modelBuilder.Entity("TradeBotPro.App.Models.DataModels.Closure", b =>
                 {
-                    b.Property<int>("PositionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -76,6 +76,9 @@ namespace TradeBotPro.App.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Quantity")
                         .HasColumnType("double");
 
@@ -85,7 +88,7 @@ namespace TradeBotPro.App.Migrations
                     b.Property<double>("VolumeInUnits")
                         .HasColumnType("double");
 
-                    b.HasKey("PositionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 

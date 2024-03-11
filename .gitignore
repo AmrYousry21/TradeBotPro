@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /TradeBotPro.App/appsettings.json
 /TradeBotPro.App/appsettings.Development.json
+/TradeBotPro.App/appsettings.Production.json

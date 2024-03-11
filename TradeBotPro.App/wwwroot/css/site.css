@@ -35,3 +35,7 @@ body {
 .font-lg { font-size: 1.2rem; }
 .font-xl { font-size: 1.4rem; }
 /* Font Sizes */
+
+tfoot tr, tfoot td {
+    border-bottom: 0;
+}

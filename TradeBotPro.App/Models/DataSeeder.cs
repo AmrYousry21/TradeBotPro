@@ -16,13 +16,26 @@ public class DataSeeder
             return;
 
         // Add User (System Admin)
-        var systemAdmin = dbContext.Users.Add(new User
+        dbContext.Users.Add(new User
+        {
+            FirstName = "Amr",
+            LastName = "Yousry",
+            Email = "amryousry19@gmail.com",
+            Password = authenticationService.HashPassword("GJL_oG$HBK59@"),
+            UserRole = UserRoleEnum.SystemAdmin,
+            Status = UserStatusEnum.Active,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        });
+
+        // Add User (System Admin)
+        dbContext.Users.Add(new User
         {
             FirstName = "Essam",
             LastName = "Yousry",
             Email = "essam.yousry1996@gmail.com",
             Password = authenticationService.HashPassword("GUagj_24dfsl@"),
-            UserRole = UserRoleEnum.Admin,
+            UserRole = UserRoleEnum.SystemAdmin,
             Status = UserStatusEnum.Active,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow

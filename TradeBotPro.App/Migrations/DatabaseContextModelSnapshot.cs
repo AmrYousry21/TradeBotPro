@@ -50,7 +50,7 @@ namespace TradeBotPro.App.Migrations
 
             modelBuilder.Entity("TradeBotPro.App.Models.DataModels.Closure", b =>
                 {
-                    b.Property<int>("PositionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -74,6 +74,9 @@ namespace TradeBotPro.App.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Quantity")
                         .HasColumnType("double");
 
@@ -83,7 +86,7 @@ namespace TradeBotPro.App.Migrations
                     b.Property<double>("VolumeInUnits")
                         .HasColumnType("double");
 
-                    b.HasKey("PositionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 

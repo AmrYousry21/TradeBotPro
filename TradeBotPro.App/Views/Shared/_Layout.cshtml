@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+}
+
+@using System.Security.Claims;
+@using TradeBotPro.App.Utilities;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,10 +16,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TradeBotPro.App.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" asp-append-version="true">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow @(controller == "Home" && action == "Index" ? string.Empty : "mb-3")">
             <div class="container-fluid">
                 <a class="navbar-brand logo" asp-area="" asp-controller="@(User.Identity?.IsAuthenticated == true ? "Dashboard" : "Home")" asp-action="Index">Trade Bot Pro</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -20,22 +29,26 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="@(User.Identity?.IsAuthenticated == true ? "Dashboard" : "Home")" asp-action="Index">@(User.Identity?.IsAuthenticated == true ? "Dashboard" : "Home")</a>
-                        </li>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Reports" asp-action="Index">Reports</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="History" asp-action="Index">History</a>
                             </li>
                         }
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRoles(UserRoles.SystemAdmin))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Index">Clients</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRoles(UserRoles.ClientAdmin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Users/@(new Guid(User.GetClaim(ClaimTypes.GroupSid)))">Users</a>
                             </li>
                         }
                     </ul>
@@ -54,7 +67,8 @@
                                     <span class="badge bg-secondary">@(string.Join(string.Empty, User.Identity?.Name?.Split(" ").Select(x => x[0])))</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Profile</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form method="post" asp-controller="Account" asp-action="Logout">
@@ -69,8 +83,26 @@
             </div>
         </nav>
     </header>
-    <div class="container px-4">
-        <main role="main" class="pb-3">
+    <div class="@(controller == "Home" && action == "Index" ? "container-fluid px-0" : "container px-4")">
+        <main role="main" class="@(controller == "Home" && action == "Index" ? string.Empty : "pb-3")">
+
+            <!-- Bootstrap Modal -->
+            <div id="layoutModal" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 id="modalTitle" class="modal-title"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="modalBody" class="modal-body"></div>
+                        <div class="modal-footer">
+                            <button id="closeModalBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button id="confirmBtn" type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @RenderBody()
         </main>
     </div>
@@ -80,9 +112,10 @@
             &copy; 2024 - Trade Bot Pro - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootbox/dist/js/bootbox.all.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

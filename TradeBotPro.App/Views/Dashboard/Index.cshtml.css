@@ -37,6 +37,11 @@
     color: #fff;
 }
 
+.blue {
+    background: cornflowerblue;
+    color: #fff;
+}
+
 .kpi-card {
     overflow: hidden;
     position: relative;
@@ -46,7 +51,7 @@
     padding: 1em;
     border-radius: 0.3em;
     font-family: sans-serif;
-    width: 240px;
+    width: 310px;
     min-width: 180px;
     margin-left: 0.5em;
     margin-top: 0.5em;

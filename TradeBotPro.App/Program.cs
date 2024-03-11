@@ -7,10 +7,10 @@ using TradeBotPro.App.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json")
-    .AddEnvironmentVariables()
-    .Build();
+     .SetBasePath(Directory.GetCurrentDirectory())
+     .AddEnvironmentVariables()
+     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true)
+     .Build();
 
 // Add Services
 builder.Services.AddRazorPages();
@@ -50,6 +50,11 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
+app.MapControllerRoute(
+    name: "IndexPattern",
+    pattern: "{controller}/{id}",
+    defaults: new { action = "Index" },
+    constraints: new { action = "Index" });
 
 // Seed Data
 using (var serviceScope = app.Services.CreateScope())

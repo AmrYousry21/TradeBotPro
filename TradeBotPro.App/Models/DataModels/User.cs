@@ -48,20 +48,22 @@ public class User
             FirstName = registerFormModel.FirstName,
             LastName = registerFormModel.LastName,
             Email = registerFormModel.Email,
-            UserRole = UserRoleEnum.User,
+            UserRole = UserRoleEnum.ClientAdmin,
         };
     }
 }
 
 public enum UserRoleEnum
 {
-    Admin = 1,
-    User = 2
+    SystemAdmin = 1,
+    ClientAdmin = 2,
+    ClientUser = 3,
 }
 
 public enum UserStatusEnum
 {
     Active = 1,
-    Inactive = 2,
-    Suspended = 3
+    New = 2,
+    Inactive = 3,
+    Suspended = 4,
 }

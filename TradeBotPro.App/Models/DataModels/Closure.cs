@@ -9,6 +9,9 @@ public class Closure
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Required]
+    public int Id { get; set; }
+
+    [Required]
     public int PositionId { get; set; }
 
     [Required]

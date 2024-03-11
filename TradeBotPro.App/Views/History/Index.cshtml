@@ -1,0 +1,257 @@
+﻿@model TradeBotPro.App.Models.ViewModels.HistoryViewModel
+@using TradeBotPro.App.Models.DataModels
+@using TradeBotPro.App.Utilities;
+@{
+    ViewData["Title"] = "History Page";
+}
+
+<div class="container px-4">
+    <div class="d-flex border-bottom border-bottom-1 pb-2 mb-4">
+        <p class="font-xl mb-0">History</p>
+        <div class="ms-auto">
+            <button id="ordersTab" class="btn btn-primary" onclick="displayOrders()">Orders</button>
+            <button id="closuresTab" class="btn btn-light" onclick="displayClosures()">Closures</button>
+        </div>
+    </div>
+    <div id="ordersContainer">
+        <div class="row mb-3">
+            <div class="col-md-2 col-sm-12 px-1">
+                <input id="filterStartDate" type="datetime-local" class="form-control" onchange="filterOrders()" />
+            </div>
+            <div class="col-md-2 col-sm-12 px-1">
+                <input id="filterEndDate" type="datetime-local" class="form-control" onchange="filterOrders()"  />
+            </div>
+            @if (User.IsInRole(UserRoles.SystemAdmin)) 
+            {
+                <div class="col-md-2 col-sm-12 px-1">
+                    <select id="filterClient" class="form-select" onchange="filterOrders()">
+                        <option value="" selected>Select Client</option>
+                        @foreach (var option in Model.Clients)
+                        {
+                            <option value="@option">@option</option>
+                        }
+                    </select>
+                </div>
+            }
+            @if (User.IsInRoles(UserRoles.SystemAdmin, UserRoles.ClientAdmin))
+            {
+                <div class="col-md-2 col-sm-12 px-1">
+                    <select id="filterUser" class="form-select" onchange="filterOrders()">
+                        <option value="" selected>Select User</option>
+                        @foreach (var option in Model.Users)
+                        {
+                            <option value="@option">@option</option>
+                        }
+                    </select>
+                </div>
+            }
+            <div class="col-md-2 col-sm-12 px-1">
+                <select id="filterCurrencyPair" class="form-select" onchange="filterOrders()">
+                    <option value="" selected>Select Currency Pair</option>
+                    <option value="USDCAD">USD/CAD</option>
+                    <option value="EURJPY">EUR/JPY</option>
+                    <option value="EURUSD">EUR/USD</option>
+                    <option value="EURCHF">EUR/CHF</option>
+                    <option value="USDCHF">USD/CHF</option>
+                    <option value="EURGBP">EUR/GBP</option>
+                    <option value="GBPUSD">GBP/USD</option>
+                    <option value="AUDCAD">AUD/CAD</option>
+                    <option value="NZDUSD">NZD/USD</option>
+                    <option value="GBPCHF">GBP/CHF</option>
+                    <option value="AUDUSD">AUD/USD</option>
+                    <option value="GBPJPY">GBP/JPY</option>
+                    <option value="USDJPY">USD/JPY</option>
+                    <option value="CHFJPY">CHF/JPY</option>
+                    <option value="EURCAD">EUR/CAD</option>
+                    <option value="AUDJPY">AUD/JPY</option>
+                    <option value="EURAUD">EUR/AUD</option>
+                    <option value="AUDNZD">AUD/NZD</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-sm-12 px-1">
+                <select id="filterType" class="form-select" onchange="filterOrders()">
+                    <option value="" selected>Select Order Type</option>
+                    <option value="BUY">Buy</option>
+                    <option value="SELL">Sell</option>
+                </select>
+            </div>
+            <div class="col-md-1 col-sm-12 px-1">
+                <button class="btn btn-secondary" onclick="resetOrderFilters()"><i class="fa fa-sync"></i></button>
+            </div>
+        </div>
+        <div style="overflow-x: auto; height: 600px; overflow-y: auto;">
+            <table id="ordersTable" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Symbol</th>
+                        <th scope="col">Entry Price</th>
+                        <th scope="col">Entry Time</th>
+                        <th scope="col">Stop Loss</th>
+                        <th scope="col">Take Profit</th>
+                        <th scope="col">Pips</th>
+                        @if (User.IsInRole(UserRoles.SystemAdmin))
+                        {
+                            <th>Client</th>
+                        }
+                        @if (User.IsInRoles(UserRoles.SystemAdmin, UserRoles.ClientAdmin))
+                        {
+                            <th scope="col">User</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>@order.Type</td>
+                            <td>@order.Symbol</td>
+                            <td>@order.EntryPrice</td>
+                            <td>@order.EntryTime</td>
+                            <td>@order.StopLoss</td>
+                            <td>@order.TakeProfit</td>
+                            <td>@Math.Round(order.Pips, 4)</td>
+                            @if (User.IsInRole(UserRoles.SystemAdmin))
+                            {
+                                <td>@order.User.Client.Name</td>
+                            }
+                            @if (User.IsInRoles(UserRoles.SystemAdmin, UserRoles.ClientAdmin))
+                            {
+                                <td>@order.User.Email</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="closuresContainer" style="display: none;">
+        <div style="overflow-x: auto; height: 600px; overflow-y: auto;">
+            <table id="closuresTable" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Volume in Units</th>
+                        <th scope="col">Gross Profit</th>
+                        <th scope="col">Net Profit</th>
+                        <th scope="col">Margin</th>
+                        <th scope="col">Commisions</th>
+                        <th scope="col">Quantity</th>
+                        @if (User.IsInRole(UserRoles.SystemAdmin))
+                        {
+                            <th>Client</th>
+                        }
+                        @if (User.IsInRoles(UserRoles.SystemAdmin, UserRoles.ClientAdmin))
+                        {
+                            <th scope="col">User</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var closure in Model.Closures)
+                    {
+                        <tr>
+                            <td>@closure.OrderId</td>
+                            <td>@closure.VolumeInUnits</td>
+                            <td>@closure.GrossProfit</td>
+                            <td>@closure.NetProfit</td>
+                            <td>@closure.Margin</td>
+                            <td>@closure.Commissions</td>
+                            <td>@closure.Quantity</td>
+                            @if (User.IsInRole(UserRoles.SystemAdmin))
+                            {
+                                <td>@closure.User.Client.Name</td>
+                            }
+                            @if (User.IsInRoles(UserRoles.SystemAdmin, UserRoles.ClientAdmin))
+                            {
+                                <td>@closure.User.Email</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        addTotalRow();
+    });
+
+    function displayOrders() {
+        $("#ordersTab").removeClass('btn-light').addClass('btn-primary');
+        $("#closuresTab").removeClass('btn-primary').addClass('btn-light');
+        $("#ordersContainer").show();
+        $("#closuresContainer").hide();
+    }
+
+    function displayClosures() {
+        $("#closuresTab").removeClass('btn-light').addClass('btn-primary');
+        $("#ordersTab").removeClass('btn-primary').addClass('btn-light');
+        $("#closuresContainer").show();
+        $("#ordersContainer").hide();
+    }
+
+    function resetOrderFilters() {
+        $("#filterStartDate").val('');
+        $("#filterEndDate").val('');
+        $("#filterClient").val('');
+        $("#filterUser").val('');
+        $("#filterCurrencyPair").val('');
+        $("#filterType").val('');
+
+        filterOrders();
+    }
+
+    function filterOrders() {
+        $("#ordersTable tbody tr").filter(function () { $(this).toggle(true); });
+        $("#ordersTable tbody tr").filter(function () {
+            var client = $(this).find("td:nth-child(9)").text();
+            var userIndex = $("#filterClient").length > 0 ? 10 : 9;
+            var user = $(this).find(`td:nth-child(${userIndex})`).text();
+            var symbol = $(this).find("td:nth-child(3)").text();
+            var type = $(this).find("td:nth-child(2)").text();
+            var entryTime = $(this).find(`td:nth-child(5)`).text();
+            var show = true;
+
+            if ($("#filterClient").length > 0 && client && client.indexOf($("#filterClient").val()) == -1) show = false;
+            if ($("#filterUser").length > 0 && user && user.indexOf($("#filterUser").val()) == -1) show = false;
+            if (symbol && symbol.indexOf($("#filterCurrencyPair").val()) == -1) show = false;
+            if (type && type.indexOf($("#filterType").val()) == -1) show = false;
+            if (entryTime) {
+                let startDate = $("#filterStartDate").val();
+                let endDate = $("#filterEndDate").val();
+
+                if (startDate && new Date(entryTime) < new Date(startDate)) show = false;
+                if (endDate && new Date(entryTime) > new Date(endDate)) show = false;
+            }
+
+            $(this).toggle(show);
+        });
+    }
+
+    function addTotalRow() {
+        var volume = 0;
+        var grossProfit = 0;
+        var netProfit = 0;
+
+        $("#closuresTable tbody tr").each(function () {
+            volume += parseFloat($(this).find("td:nth-child(2)").text());
+            grossProfit += parseFloat($(this).find("td:nth-child(3)").text());
+            netProfit += parseFloat($(this).find("td:nth-child(4)").text());
+        });
+
+        $("#closuresTable tfoot").remove();
+        $("<tfoot>").appendTo("#closuresTable").append(
+            $("<tr>").append(
+                $("<td>").html("<strong>Total</strong>"),
+                $("<td>").html(`<strong>${(volume)}</strong>`),
+                $("<td>").html(`<strong>${(grossProfit.toFixed(2))}</strong>`),
+                $("<td>").html(`<strong>${(netProfit.toFixed(2))}</strong>`),
+            )
+        );
+    }
+</script>

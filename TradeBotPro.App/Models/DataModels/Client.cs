@@ -30,7 +30,6 @@ public class Client
 
     public List<User> Users { get; set; }
 
-
     public static explicit operator Client(ClientEditFormModel clientEditFormModel)
     {
         return new Client

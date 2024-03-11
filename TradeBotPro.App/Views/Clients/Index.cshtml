@@ -1,0 +1,59 @@
+﻿@model TradeBotPro.App.Models.ViewModels.ClientListViewModel
+@using TradeBotPro.App.Models.DataModels
+@{
+    ViewData["Title"] = "Clients Page";
+}
+
+<div class="container px-4">
+    <div class="d-flex border-bottom border-bottom-1 pb-2 mb-4">
+        <p class="font-xl mb-0">Clients</p>
+        <div class="ms-auto">
+            <a class="btn btn-primary px-3 py-1" asp-area="" asp-controller="Clients" asp-action="Add">Add Client</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Registration Key</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in Model.Clients)
+            {
+                <tr>
+                    <td>@client.Name</td>
+                    <td><span class="badge bg-@GetStatusClass(client.Status.ToString())">@client.Status.ToString()</span></td>
+                    <td>@client.RegistrationKey</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary" asp-area="" asp-controller="Clients" asp-action="Edit" asp-route-id="@client.Id"><i class="fas fa-pen"></i></a>
+                        @if (client.Status == ClientStatusEnum.Active)
+                        {
+                            <button id="suspendBtn@(client.Id)" class="btn btn-sm btn-outline-danger" onclick="confirmAndPost('suspend this client', this.id, '/Clients/UpdateStatus')" data-clientId="@client.Id" data-status="Suspended"><i class="fas fa-ban"></i></button>
+                        }
+                        else
+                        {
+                            <button id="activateBtn@(client.Id)" class="btn btn-sm btn-outline-success" onclick="confirmAndPost('activate this client', this.id, '/Clients/UpdateStatus')" data-clientId="@client.Id" data-status="Active"><i class="fas fa-check"></i></button>
+                        }
+                        <a class="btn btn-sm btn-outline-secondary" href="/Users/@client.Id"><i class="fas fa-user"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@functions {
+    string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Active" => "success",
+            "Inactive" => "warning",
+            "Suspended" => "danger",
+            _ => "default"
+        };
+    }
+}

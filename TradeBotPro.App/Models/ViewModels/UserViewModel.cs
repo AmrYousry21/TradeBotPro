@@ -8,7 +8,9 @@ public class UserViewModel
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
+    public string UserRole { get; set; }
     public UserStatusEnum Status { get; set; }
+    public Guid? ClientId { get; set; }
 
     public static explicit operator UserViewModel(User user)
     {
@@ -18,7 +20,9 @@ public class UserViewModel
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
-            Status = user.Status
+            UserRole = user.UserRole.ToString(),
+            Status = user.Status,
+            ClientId = user?.Client?.Id
         };
     }
 }

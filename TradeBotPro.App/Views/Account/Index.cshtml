@@ -1,0 +1,29 @@
+﻿@using TradeBotPro.App.Models.DataModels;
+@model TradeBotPro.App.Models.FormModels.AccountFormModel
+@{
+    ViewData["Title"] = "Account Page";
+}
+
+<div class="row">
+    <div class="box-shadow col-lg-6 col-md-8 col-sm-12 border border-1 py-4 rounded position-absolute top-50 start-50 translate-middle">
+        <h4 class="mb-4">Account</h4>
+        <form asp-action="Update" method="post">
+            <div class="form-group mb-3">
+                <label asp-for="FirstName">First Name</label>
+                <input asp-for="FirstName" class="form-control">
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LastName">Last Name</label>
+                <input asp-for="LastName" class="form-control">
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Email">Email</label>
+                <input type="hidden" asp-for="Email" />
+                <input type="text" value="@Model.Email" class="form-control" disabled>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Save</button>
+        </form>
+    </div>
+</div>

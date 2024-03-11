@@ -11,6 +11,12 @@ a {
   color: #0077cc;
 }
 
+.active {
+    background: aliceblue;
+    border: 0.5px solid lightsteelblue;
+    border-radius: 6px;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

@@ -6,7 +6,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace TradeBotPro.App.Migrations
 {
-    public partial class InitialSetup : Migration
+    public partial class AddTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,7 +38,7 @@ namespace TradeBotPro.App.Migrations
                     FirstName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "longtext", nullable: false),
-                    Password = table.Column<string>(type: "varchar(24)", maxLength: 24, nullable: false),
+                    Password = table.Column<string>(type: "longtext", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     UserRole = table.Column<int>(type: "int", nullable: false),
                     ClientId = table.Column<Guid>(type: "char(36)", nullable: true),
@@ -60,8 +60,9 @@ namespace TradeBotPro.App.Migrations
                 name: "closures",
                 columns: table => new
                 {
-                    PositionId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    PositionId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     VolumeInUnits = table.Column<double>(type: "double", nullable: false),
                     GrossProfit = table.Column<double>(type: "double", nullable: false),
@@ -74,7 +75,7 @@ namespace TradeBotPro.App.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_closures", x => x.PositionId);
+                    table.PrimaryKey("PK_closures", x => x.Id);
                     table.ForeignKey(
                         name: "FK_closures_users_UserId",
                         column: x => x.UserId,

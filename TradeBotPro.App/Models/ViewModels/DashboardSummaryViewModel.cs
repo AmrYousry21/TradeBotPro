@@ -2,7 +2,11 @@
 
 public class DashboardSummaryViewModel
 {
+    public int ClientCount { get; set; }
+    public int UserCount { get; set; }
     public int TotalClosedOrders { get; set; }
-    public double TotalProfit { get; set; }
-    public double TotalLoss { get; set; }
+    public double NetProfit { get; set; }
+    public string TradeCountByTradeType { get; set; }
+    public string TradeVolumeByTradeType { get; set; }
+    public string YearlyProfit { get; set; }
 }

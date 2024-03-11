@@ -1,0 +1,73 @@
+﻿@using TradeBotPro.App.Models.DataModels;
+@using TradeBotPro.App.Utilities;
+@model TradeBotPro.App.Models.FormModels.UserEditFormModel
+@{
+    ViewData["Title"] = "User Edit Page";
+}
+
+<div class="row">
+    <div class="box-shadow col-lg-6 col-md-8 col-sm-12 border border-1 py-4 rounded position-absolute top-50 start-50 translate-middle">
+        <h4 class="mb-4">@(Model.Edit ? "Edit" : "Add") User</h4>
+        <form id="form" method="post">
+            <div class="form-group mb-3">
+                <label asp-for="FirstName">First Name <span class="text-danger">*</span></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LastName">Last Name <span class="text-danger">*</span></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Email">Email <span class="text-danger">*</span></label>
+                @if (Model.Edit)
+                {
+                    <input type="hidden" asp-for="Email">
+                    <input class="form-control" value="@Model.Email" disabled />
+                }
+                else
+                {
+                    <input asp-for="Email" class="form-control" />
+                }
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="mb-1">Password <span class="text-danger">*</span></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            @if (Model.Edit)
+            {
+                <div class="form-group mb-3">
+                    <label asp-for="Status">Status <span class="text-danger">*</span></label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="">Select...</option>
+                        @foreach (var item in Model.StatusList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            }
+
+            @if (!Model.Edit)
+            {
+                <div class="form-group mb-3">
+                    <label asp-for="UserRole">Role <span class="text-danger">*</span></label>
+                    <select asp-for="UserRole" class="form-select">
+                        <option value="">Select...</option>
+                        @foreach (var item in Model.RoleList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="UserRole" class="text-danger"></span>
+                </div>
+            }
+
+            <button type="submit" class="btn btn-primary w-100">Save</button>
+        </form>
+    </div>
+</div>
